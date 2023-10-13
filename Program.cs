@@ -1,10 +1,11 @@
-using Microsoft.EntityFrameworkCore;
+
+using Teste_TGS.Interfaces;
+using Teste_TGS.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("AppDb");
-builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(connectionString));
-
+builder.Services.AddScoped<IDapperContext, DapperContext>();
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

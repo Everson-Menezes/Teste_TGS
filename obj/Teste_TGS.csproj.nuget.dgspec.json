@@ -39,13 +39,13 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
-            "Microsoft.EntityFrameworkCore": {
+            "System.Data.SqlClient": {
               "target": "Package",
-              "version": "[7.0.12, )"
+              "version": "[4.8.5, )"
             },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
+            "dapper": {
               "target": "Package",
-              "version": "[7.0.12, )"
+              "version": "[2.1.11, )"
             }
           },
           "imports": [

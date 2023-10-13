@@ -11,6 +11,8 @@
 --     Estado NVARCHAR(50),
 --     Pais NVARCHAR(50),
 --     Cep NVARCHAR(8),
+--     ClienteId INT, -- Chave estrangeira para a tabela de Clientes
+
 -- );
 
 -- -- Crie a tabela de clientes
@@ -19,10 +21,16 @@
 --     Nome NVARCHAR(255),
 --     Email NVARCHAR(100) UNIQUE, -- Garante e-mails únicos
 --     Logotipo NVARCHAR(Max),
---     LogradouroId INT, -- Chave estrangeira para a tabela de logradouros
 -- );
 
--- -- Defina a restrição de chave estrangeira para o campo LogradouroId
--- ALTER TABLE TB_Clientes
--- ADD CONSTRAINT FK_Clientes_Logradouros FOREIGN KEY (LogradouroId)
--- REFERENCES TB_Logradouros (Id);
+-- -- Defina a restrição de chave estrangeira para o campo ClienteId
+-- ALTER TABLE TB_Logradouros
+-- ADD CONSTRAINT FK_Clientes_Logradouros FOREIGN KEY (ClienteId)
+-- REFERENCES TB_Clientes (Id);
+
+-- --Insert
+-- INSERT INTO TB_Logradouros (Rua,Cidade,Bairro,Estado,Pais,Cep,ClienteId)
+-- VALUES ('Rua das violetas, 127', 'São Bernardo do Campo', 'Assunção', 'São Paulo', 'Brasil', '09811190', 1);
+
+-- INSERT INTO TB_Clientes (Nome,Email,Logotipo)
+-- VALUES ('Everson', 'Everson@Email.com.br', 'vazio');
