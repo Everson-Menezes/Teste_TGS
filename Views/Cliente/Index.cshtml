@@ -4,7 +4,7 @@
     ViewData["Title"] = "Gerenciamento de Clientes";
 }
 
-<h1>CLIENTES</h1>
+<h1>Clientes</h1>
 
 <table class="table">
     <thead class="container">
@@ -35,21 +35,9 @@
                     @Html.DisplayFor(modelItem => item.Logotipo)
                 </td>
                 <td class="col-sm"> *
-                    @* @if (User.IsInRole("Master"))
-                { *@
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Visualizar</a>
                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Excluir</a>
-                    @* }
-                else if (User.IsInRole("Avançado"))
-                {
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a>
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Visualizar</a>
-                }
-                else
-                {
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Visualizar</a>
-                } *@
                 </td>
             </tr>
         }

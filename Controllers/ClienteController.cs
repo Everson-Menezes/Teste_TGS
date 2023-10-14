@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Teste_TGS.Interfaces;
 using Teste_TGS.Models;
 using Teste_TGS.ViewModels;
-
+using System;
+using Microsoft.AspNetCore.Http;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Teste_TGS.Controllers;
 
@@ -18,6 +20,14 @@ public class ClienteController : Controller
         _clienteRepository = clienteRepository;
     }
 
+    public byte[] byteArrayToImage()
+    {
+        // caminho da imagem
+        string imgPath = "/home/everson/Projects/DotNet/Teste_TGS/Assets/1567036288331.jpeg";
+        // Converte a imagem em um array de bytes
+        return System.IO.File.ReadAllBytes(imgPath);
+    }
+
     public IActionResult Index()
     {
         var clientes = _clienteRepository.GetAllClientes();
@@ -30,7 +40,7 @@ public class ClienteController : Controller
             obj.Id = registro.Id;
             obj.Nome = registro.Nome;
             obj.Email = registro.Email;
-
+            obj.Logotipo.imagemString = ConverterArquivoByteArrayEmBase64(byteArrayToImage());
             clienteViewModel.Add(obj);
         }
         return View(clienteViewModel);
@@ -43,14 +53,15 @@ public class ClienteController : Controller
     }
 
     [HttpPost]
-    public IActionResult Create(Cliente cliente)
+    public IActionResult Create(ClienteViewModel clienteViewModel)
     {
         if (ModelState.IsValid)
         {
+            Cliente cliente = new Cliente();
             _clienteRepository.CreateCliente(cliente);
             return RedirectToAction("Index");
         }
-        return View(cliente);
+        return View(clienteViewModel);
     }
     public IActionResult Details(int id)
     {
@@ -122,6 +133,36 @@ public class ClienteController : Controller
     {
         _clienteRepository.DeleteCliente(id);
         return RedirectToAction("Index");
+    }
+
+    protected string ConverterArquivoByteArrayEmBase64(byte[] arq)
+    {
+        try
+        {
+            return "data:application/pdf;base64," + Convert.ToBase64String(arq);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    protected byte[] ConverteArquivo(IFormFile arq)
+    {
+        byte[]? result = null;
+        if (arq.Length > 0)
+        {
+            //Leitura dos binarios
+            using (BinaryReader br = new BinaryReader(arq.OpenReadStream()))
+            {
+                // Converte o arquivo em bytes
+                return br.ReadBytes((int)arq.OpenReadStream().Length);
+            }
+        }
+        else
+        {
+            return result;
+        }
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Create";
+    var Enderecos = 0;
 }
 
 <h1>Cadastrar</h1>
@@ -10,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Nome" class="control-label"></label>
@@ -24,6 +25,45 @@
             </div>
 
             <div class="form-group">
+                <label asp-for="Logotipo.Arquivo" class="control-label"></label>
+                <input type="file" class="form-control" required id="ImagemUpload" asp-for="Logotipo.Arquivo"
+                    accept="image/png, image/gif, image/jpeg">
+                <span asp-validation-for="Logotipo.Arquivo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Enderecos" class="control-label"></label>
+                <input asp-for="Enderecos" class="form-control" required id="qtdEnderecos" />
+                <span asp-validation-for="Enderecos" class="text-danger"></span>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Rua</th>
+                        <th>Bairro</th>
+                        <th>Cidade</th>
+                        <th>Estado</th>
+                        <th>Pais</th>
+                        <th>CEP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Enderecos; i++)
+                    {
+                        <tr>
+                            <td><input asp-for="Logradouro[i].Rua" /></td>
+                            <td><input asp-for="Logradouro[i].Bairro" /></td>
+                            <td><input asp-for="Logradouro[i].Cidade" /></td>
+                            <td><input asp-for="Logradouro[i].Estado" /></td>
+                            <td><input asp-for="Logradouro[i].Pais" /></td>
+                            <td><input asp-for="Logradouro[i].Cep" /></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="form-group">
                 <input type="submit" value="Cadastrar" class="btn btn-primary" />
             </div>
         </form>
@@ -31,9 +71,28 @@
 </div>
 
 <div>
-    @* @if (User.IsInRole("Master"))
-    { *@
     <a asp-action="Index" class="btn btn-info">Voltar</a>
-    @* }
-    <a asp-action="Index" asp-controller="Home" class="btn btn-info">Voltar</a> *@
 </div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+<script>
+    $("#qtdEnderecos").change(function () {
+        Enderecos = document.getElementById("#qtdEnderecos").text;
+        alert("Field Value: " + Enderecos);
+    });
+
+
+    $("#ImagemUpload").change(function () {
+        $("#img_nome").text(this.files[0].name);
+        $("#img_nome")[0].style.display = 'block';
+    });
+
+    $("#ImagemUpload").attr("data-val", "true");
+    $("#ImagemUpload").attr("data-val-required", "Preencha o campo Imagem");
+</script>
+}
