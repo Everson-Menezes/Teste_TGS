@@ -1,11 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Teste_TGS.Interfaces;
 using Teste_TGS.Models;
 using Teste_TGS.ViewModels;
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace Teste_TGS.Controllers;

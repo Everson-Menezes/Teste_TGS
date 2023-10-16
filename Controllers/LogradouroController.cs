@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Teste_TGS.Interfaces;
 using Teste_TGS.Models;
 using Teste_TGS.ViewModels;
 
