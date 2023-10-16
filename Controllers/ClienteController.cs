@@ -15,12 +15,10 @@ public class ClienteController : Controller
     private readonly ILogger<ClienteController> _logger;
     private readonly IConfiguration _iConfiguration;
     private readonly string _baseUrl;
-    private readonly HttpClient _httpClient;
     private readonly IHttpClientFactory _clientFactory;
     public ClienteController(ILogger<ClienteController> logger, IConfiguration iConfiguration, IHttpClientFactory iClientFactory)
     {
         _iConfiguration = iConfiguration;
-        _httpClient = new HttpClient();
         _baseUrl = _iConfiguration.GetSection("ApiSettings")["BaseUrl"];
         _logger = logger;
         _clientFactory = iClientFactory;
@@ -74,123 +72,164 @@ public class ClienteController : Controller
         var response = await client.PostAsync($"{_baseUrl}cliente/Create", data);
         response.EnsureSuccessStatusCode();
 
+        return RedirectToAction("Create", "Logradouro", new { Id = cliente.Id });
+    }
+    public async Task<IActionResult> DetailsAsync(int id)
+    {
+
+        if (id == 0)
+        {
+            RedirectToAction("Index", "Cliente");
+        }
+
+        var client = _clientFactory.CreateClient("localhost");
+
+        var response = await client.GetAsync($"{_baseUrl}cliente/getById/{id}");
+
+        var content = await response.Content.ReadAsStringAsync();
+
+        Cliente cliente = JsonConvert.DeserializeObject<Cliente>(content);
+        if (cliente == null)
+        {
+            return NotFound();
+        }
+
+        ClienteViewModel obj = new ClienteViewModel();
+
+        obj.Id = cliente.Id;
+        obj.Nome = cliente.Nome;
+        obj.Email = cliente.Email;
+        obj.Logotipo = new LogoTipoViewModel();
+        obj.Logotipo.imagemString = ConverterArquivoByteArrayEmBase64(cliente.LogoTipo);
+        obj.Logradouros = new List<LogradouroViewModel>();
+        foreach (var item in cliente.logradouros)
+        {
+            LogradouroViewModel logradouroViewModel = new LogradouroViewModel
+            {
+                Id = item.Id,
+                Rua = item.Rua,
+                Bairro = item.Bairro,
+                Cidade = item.Cidade,
+                Estado = item.Estado,
+                Pais = item.Pais,
+                Cep = item.Cep,
+                ClienteId = item.ClienteId
+            };
+            obj.Logradouros.Add(logradouroViewModel);
+        }
+
+
+        return View(obj);
+    }
+
+    public async Task<IActionResult> EditAsync(int id)
+    {
+        if (id == 0)
+        {
+            RedirectToAction("Index", "Cliente");
+        }
+
+        var client = _clientFactory.CreateClient("localhost");
+
+        var response = await client.GetAsync($"{_baseUrl}cliente/getById/{id}");
+
+        var content = await response.Content.ReadAsStringAsync();
+
+        Cliente cliente = JsonConvert.DeserializeObject<Cliente>(content);
+        if (cliente == null)
+        {
+            return NotFound();
+        }
+
+        ClienteViewModel obj = new ClienteViewModel();
+
+        obj.Id = cliente.Id;
+        obj.Nome = cliente.Nome;
+        obj.Email = cliente.Email;
+        obj.Logotipo = new LogoTipoViewModel();
+        obj.Logotipo.imagemString = ConverterArquivoByteArrayEmBase64(cliente.LogoTipo);
+        obj.Logradouros = new List<LogradouroViewModel>();
+        foreach (var item in cliente.logradouros)
+        {
+            LogradouroViewModel logradouroViewModel = new LogradouroViewModel
+            {
+                Id = item.Id,
+                Rua = item.Rua,
+                Bairro = item.Bairro,
+                Cidade = item.Cidade,
+                Estado = item.Estado,
+                Pais = item.Pais,
+                Cep = item.Cep,
+                ClienteId = item.ClienteId
+            };
+            obj.Logradouros.Add(logradouroViewModel);
+        }
+
+
+        return View(obj);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditAsync(ClienteViewModel clienteViewModel)
+    {
+
+        Cliente cliente = new Cliente();
+        cliente.Id = clienteViewModel.Id;
+        cliente.Email = clienteViewModel.Email;
+        cliente.Nome = clienteViewModel.Nome;
+        cliente.LogoTipo = ConverteArquivo(clienteViewModel.Logotipo.Arquivo);
+
+        var client = _clientFactory.CreateClient("localhost");
+        var clienteJson = JsonConvert.SerializeObject(cliente);
+        var data = new StringContent(clienteJson, System.Text.Encoding.UTF8, "application/json");
+
+        var response = await client.PutAsync($"{_baseUrl}cliente/edit", data);
+        response.EnsureSuccessStatusCode();
+
+        return RedirectToAction("Index");
+
+    }
+    public async Task<IActionResult> DeleteAsync(int id)
+    {
+        if (id == 0)
+        {
+            RedirectToAction("Index", "Cliente");
+        }
+
+        var client = _clientFactory.CreateClient("localhost");
+
+        var response = await client.GetAsync($"{_baseUrl}cliente/getById/{id}");
+
+        var content = await response.Content.ReadAsStringAsync();
+
+        Cliente cliente = JsonConvert.DeserializeObject<Cliente>(content);
+        if (cliente == null)
+        {
+            return NotFound();
+        }
+
+        ClienteViewModel obj = new ClienteViewModel();
+
+        obj.Id = cliente.Id;
+        obj.Nome = cliente.Nome;
+        obj.Email = cliente.Email;
+        obj.Logotipo = new LogoTipoViewModel();
+        obj.Logotipo.imagemString = ConverterArquivoByteArrayEmBase64(cliente.LogoTipo);
+
+
+
+        return View(obj);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    public async Task<IActionResult> DeleteConfirmedAsync(int id)
+    {
+        var client = _clientFactory.CreateClient("localhost");
+
+        var response = await client.DeleteAsync($"{_baseUrl}cliente/delete/{id}");
+        response.EnsureSuccessStatusCode();
         return RedirectToAction("Index");
     }
-    // public IActionResult Details(int id)
-    // {
-
-    //     if (id == 0)
-    //     {
-    //         RedirectToAction("Index", "Home");
-    //     }
-
-    //     var cliente = _clienteRepository.GetClienteById(id);
-
-    //     if (cliente == null)
-    //     {
-    //         return NotFound();
-    //     }
-
-    //     ClienteViewModel obj = new ClienteViewModel();
-
-    //     obj.Id = cliente.Id;
-    //     obj.Nome = cliente.Nome;
-    //     obj.Email = cliente.Email;
-    //     obj.Logotipo = new LogoTipoViewModel();
-    //     obj.Logotipo.imagemString = ConverterArquivoByteArrayEmBase64(cliente.LogoTipo);
-    //     obj.Logradouro = new List<LogradouroViewModel>();
-    //     var logradouros = _clienteRepository.GetAllLogradouros(cliente.Id);
-    //     foreach (var item in logradouros)
-    //     {
-    //         LogradouroViewModel logradouroViewModel = new LogradouroViewModel
-    //         {
-    //             Rua = item.Rua,
-    //             Bairro = item.Bairro,
-    //             Cidade = item.Cidade,
-    //             Estado = item.Estado,
-    //             Pais = item.Pais,
-    //             Cep = item.Cep,
-    //             ClienteId = item.ClienteId
-    //         };
-    //         obj.Logradouro.Add(logradouroViewModel);
-    //     }
-
-    //     return View(obj);
-    // }
-
-    // public IActionResult Edit(int id)
-    // {
-    //     var cliente = _clienteRepository.GetClienteById(id);
-    //     if (cliente == null)
-    //     {
-    //         return NotFound();
-    //     }
-    //     ClienteViewModel obj = new ClienteViewModel();
-
-    //     obj.Id = cliente.Id;
-    //     obj.Nome = cliente.Nome;
-    //     obj.Email = cliente.Email;
-    //     obj.Logotipo = new LogoTipoViewModel();
-    //     obj.Logotipo.imagemString = ConverterArquivoByteArrayEmBase64(cliente.LogoTipo);
-    //     obj.Logradouro = new List<LogradouroViewModel>();
-    //     var logradouros = _clienteRepository.GetAllLogradouros(cliente.Id);
-    //     foreach (var item in logradouros)
-    //     {
-    //         LogradouroViewModel logradouroViewModel = new LogradouroViewModel
-    //         {
-    //             Id = item.Id,
-    //             Rua = item.Rua,
-    //             Bairro = item.Bairro,
-    //             Cidade = item.Cidade,
-    //             Estado = item.Estado,
-    //             Pais = item.Pais,
-    //             Cep = item.Cep,
-    //             ClienteId = item.ClienteId
-    //         };
-    //         obj.Logradouro.Add(logradouroViewModel);
-    //     }
-    //     return View(obj);
-    // }
-
-    // [HttpPost]
-    // public IActionResult Edit(ClienteViewModel clienteViewModel)
-    // {
-
-    //     Cliente cliente = new Cliente();
-    //     cliente.Id = clienteViewModel.Id;
-    //     cliente.Email = clienteViewModel.Email;
-    //     cliente.Nome = clienteViewModel.Nome;
-    //     cliente.LogoTipo = ConverteArquivo(clienteViewModel.Logotipo.Arquivo);
-
-    //     _clienteRepository.UpdateCliente(cliente);
-    //     return RedirectToAction("Index");
-
-    //     return View(clienteViewModel);
-    // }
-    // public IActionResult Delete(int id)
-    // {
-    //     var cliente = _clienteRepository.GetClienteById(id);
-    //     if (cliente == null)
-    //     {
-    //         return NotFound();
-    //     }
-
-    //     ClienteViewModel obj = new ClienteViewModel();
-
-    //     obj.Id = cliente.Id;
-    //     obj.Nome = cliente.Nome;
-    //     obj.Email = cliente.Email;
-    //     obj.Logotipo = new LogoTipoViewModel();
-    //     obj.Logotipo.imagemString = ConverterArquivoByteArrayEmBase64(cliente.LogoTipo);
-    //     return View(obj);
-    // }
-
-    // [HttpPost, ActionName("Delete")]
-    // public IActionResult DeleteConfirmed(int id)
-    // {
-    //     _clienteRepository.DeleteCliente(id);
-    //     return RedirectToAction("Index");
-    // }
 
     protected string ConverterArquivoByteArrayEmBase64(byte[] arq)
     {

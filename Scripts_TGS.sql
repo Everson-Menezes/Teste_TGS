@@ -31,7 +31,7 @@
 
 -- --Insert
 -- INSERT INTO TB_Logradouros (Rua,Cidade,Bairro,Estado,Pais,Cep,ClienteId)
--- VALUES ('Rua das violetas, 127', 'São Bernardo do Campo', 'Assunção', 'São Paulo', 'Brasil', '09811190', 1);
+-- VALUES ('Rua das violetas, 127', 'São Bernardo do Campo', 'Assunção', 'São Paulo', 'Brasil', '09811190', 6);
 
 -- INSERT INTO TB_Clientes (Nome,Email,Logotipo)
 -- VALUES ('Everson', 'Everson@Email.com.br', 'vazio');

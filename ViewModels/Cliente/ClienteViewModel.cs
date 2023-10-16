@@ -10,6 +10,6 @@ namespace Teste_TGS.ViewModels
         public string Email { get; set; }
         public LogoTipoViewModel Logotipo { get; set; }
 
-        public List<LogradouroViewModel> Logradouro { get; set; }
+        public List<LogradouroViewModel> Logradouros { get; set; }
     }
 }

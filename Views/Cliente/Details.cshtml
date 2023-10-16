@@ -35,35 +35,35 @@
     <table class="table">
         <thead>
             <tr>
-                <th> @Html.DisplayNameFor(model => model.Logradouro[0].Rua)</th>
-                <th> @Html.DisplayNameFor(model => model.Logradouro[0].Bairro)</th>
-                <th> @Html.DisplayNameFor(model => model.Logradouro[0].Cidade)</th>
-                <th> @Html.DisplayNameFor(model => model.Logradouro[0].Estado)</th>
-                <th> @Html.DisplayNameFor(model => model.Logradouro[0].Pais)</th>
-                <th> @Html.DisplayNameFor(model => model.Logradouro[0].Cep)</th>
+                <th> @Html.DisplayNameFor(model => model.Logradouros[0].Rua)</th>
+                <th> @Html.DisplayNameFor(model => model.Logradouros[0].Bairro)</th>
+                <th> @Html.DisplayNameFor(model => model.Logradouros[0].Cidade)</th>
+                <th> @Html.DisplayNameFor(model => model.Logradouros[0].Estado)</th>
+                <th> @Html.DisplayNameFor(model => model.Logradouros[0].Pais)</th>
+                <th> @Html.DisplayNameFor(model => model.Logradouros[0].Cep)</th>
             </tr>
         </thead>
         <tbody>
-            @for (int i = 0; i < Model.Logradouro.Count; i++)
+            @for (int i = 0; i < Model.Logradouros.Count; i++)
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(model => model.Logradouro[i].Rua)
+                        @Html.DisplayFor(model => model.Logradouros[i].Rua)
                     </td>
                     <td>
-                        @Html.DisplayFor(model => model.Logradouro[i].Bairro)
+                        @Html.DisplayFor(model => model.Logradouros[i].Bairro)
                     </td>
                     <td>
-                        @Html.DisplayFor(model => model.Logradouro[i].Cidade)
+                        @Html.DisplayFor(model => model.Logradouros[i].Cidade)
                     </td>
                     <td>
-                        @Html.DisplayFor(model => model.Logradouro[i].Estado)
+                        @Html.DisplayFor(model => model.Logradouros[i].Estado)
                     </td>
                     <td>
-                        @Html.DisplayFor(model => model.Logradouro[i].Pais)
+                        @Html.DisplayFor(model => model.Logradouros[i].Pais)
                     </td>
                     <td>
-                        @Html.DisplayFor(model => model.Logradouro[i].Cep)
+                        @Html.DisplayFor(model => model.Logradouros[i].Cep)
                     </td>
                 </tr>
             }
