@@ -38,3 +38,9 @@
 /home/everson/Projects/DotNet/Teste_TGS/obj/Debug/net7.0/Teste_TGS.pdb
 /home/everson/Projects/DotNet/Teste_TGS/obj/Debug/net7.0/Teste_TGS.genruntimeconfig.cache
 /home/everson/Projects/DotNet/Teste_TGS/obj/Debug/net7.0/ref/Teste_TGS.dll
+/home/everson/Projects/DotNet/Teste_TGS/bin/Debug/net7.0/Microsoft.IdentityModel.Abstractions.dll
+/home/everson/Projects/DotNet/Teste_TGS/bin/Debug/net7.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/home/everson/Projects/DotNet/Teste_TGS/bin/Debug/net7.0/Microsoft.IdentityModel.Logging.dll
+/home/everson/Projects/DotNet/Teste_TGS/bin/Debug/net7.0/Microsoft.IdentityModel.Tokens.dll
+/home/everson/Projects/DotNet/Teste_TGS/bin/Debug/net7.0/System.IdentityModel.Tokens.Jwt.dll
+/home/everson/Projects/DotNet/Teste_TGS/bin/Debug/net7.0/System.Security.Permissions.dll

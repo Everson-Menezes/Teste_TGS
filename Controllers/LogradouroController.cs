@@ -1,4 +1,7 @@
 using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Teste_TGS.Models;
@@ -12,12 +15,15 @@ public class LogradouroController : Controller
     private readonly IConfiguration _iConfiguration;
     private readonly string _baseUrl;
     private readonly IHttpClientFactory _clientFactory;
+    private string _token;
+
     public LogradouroController(ILogger<LogradouroController> logger, IConfiguration iConfiguration, IHttpClientFactory iClientFactory)
     {
         _logger = logger;
         _iConfiguration = iConfiguration;
         _baseUrl = _iConfiguration.GetSection("ApiSettings")["BaseUrl"];
         _clientFactory = iClientFactory;
+        PegarTokenAsync();
     }
 
     public IActionResult Create(int Id)
@@ -46,6 +52,8 @@ public class LogradouroController : Controller
         var data = new StringContent(logradouroJson, System.Text.Encoding.UTF8, "application/json");
 
         var client = _clientFactory.CreateClient("localhost");
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+
 
         var response = await client.PostAsync($"{_baseUrl}logradouro/create", data);
         response.EnsureSuccessStatusCode();
@@ -55,6 +63,7 @@ public class LogradouroController : Controller
     public async Task<IActionResult> EditAsync(int id, int clienteId)
     {
         var client = _clientFactory.CreateClient("localhost");
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
 
         var response = await client.GetAsync($"{_baseUrl}logradouro/get/{id}/{clienteId}");
         response.EnsureSuccessStatusCode();
@@ -97,6 +106,8 @@ public class LogradouroController : Controller
         var logradouroJson = JsonConvert.SerializeObject(logradouro);
         var data = new StringContent(logradouroJson, System.Text.Encoding.UTF8, "application/json");
         var client = _clientFactory.CreateClient("localhost");
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+
         var response = await client.PutAsync($"{_baseUrl}logradouro/edit/", data);
         response.EnsureSuccessStatusCode();
 
@@ -105,6 +116,7 @@ public class LogradouroController : Controller
     public async Task<IActionResult> DeleteAsync(int id, int clienteId)
     {
         var client = _clientFactory.CreateClient("localhost");
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
 
         var response = await client.GetAsync($"{_baseUrl}logradouro/get/{id}/{clienteId}");
         response.EnsureSuccessStatusCode();
@@ -135,11 +147,48 @@ public class LogradouroController : Controller
     public async Task<IActionResult> DeleteConfirmedAsync(int id)
     {
         var client = _clientFactory.CreateClient("localhost");
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
 
         var response = await client.DeleteAsync($"{_baseUrl}logradouro/delete/{id}");
         response.EnsureSuccessStatusCode();
         return RedirectToAction("Index", "Cliente");
     }
+    private async Task PegarTokenAsync()
+    {
+        var client = _clientFactory.CreateClient("localhost");
+
+        var response = await client.GetAsync($"{_baseUrl}auth");
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+        this._token = JsonConvert.DeserializeObject<string>(content);
+        // Suponha que você tenha o token JWT em uma variável chamada "token"
+        HttpContext.Session.SetString("Token", _token);
+        TokenIsValidAsync(HttpContext.Session.Get("Token"));
+    }
+
+    private async Task TokenIsValidAsync(byte[] token)
+    {
+        string tk = Encoding.UTF8.GetString(token);
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var tokenObj = tokenHandler.ReadJwtToken(tk);
+
+        var expiration = tokenObj.ValidTo;
+
+        // Verifique se o token expirou
+        if (expiration < DateTime.Now)
+        {
+            HttpContext.Session.Remove("Token");
+
+            var client = _clientFactory.CreateClient("localhost");
+
+            var response = await client.GetAsync($"{_baseUrl}auth");
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            this._token = JsonConvert.DeserializeObject<string>(content);
+            HttpContext.Session.SetString("Token", tk);
+        }
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
