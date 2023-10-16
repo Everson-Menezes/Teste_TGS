@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ZLB07fl9ahgI7Jfdf3kDzMpzzX/cvN/FVscy3WIGDl2l4UGhgFU6bkJJ6zDzk+dWnbeyH1KL6rWtBfWnWJCOPA==",
+  "dgSpecHash": "zB6/h8Cg8V5b/6mkf6yG+a8KvknHnsl4cKsONwWiLCoK/L9FS21z8SloCsIDfO/O3hcGjtOvH9s7tPT3Pyf/1A==",
   "success": true,
   "projectFilePath": "/home/everson/Projects/DotNet/Teste_TGS/Teste_TGS.csproj",
   "expectedPackageFiles": [
@@ -16,6 +16,7 @@
     "/home/everson/.nuget/packages/microsoft.net.http.headers/2.2.0/microsoft.net.http.headers.2.2.0.nupkg.sha512",
     "/home/everson/.nuget/packages/microsoft.netcore.platforms/3.1.0/microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "/home/everson/.nuget/packages/microsoft.win32.registry/4.7.0/microsoft.win32.registry.4.7.0.nupkg.sha512",
+    "/home/everson/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
     "/home/everson/.nuget/packages/runtime.native.system.data.sqlclient.sni/4.7.0/runtime.native.system.data.sqlclient.sni.4.7.0.nupkg.sha512",
     "/home/everson/.nuget/packages/runtime.win-arm64.runtime.native.system.data.sqlclient.sni/4.4.0/runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "/home/everson/.nuget/packages/runtime.win-x64.runtime.native.system.data.sqlclient.sni/4.4.0/runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",

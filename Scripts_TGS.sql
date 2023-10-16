@@ -20,8 +20,9 @@
 --     Id INT IDENTITY(1,1) PRIMARY KEY,
 --     Nome NVARCHAR(255),
 --     Email NVARCHAR(100) UNIQUE, -- Garante e-mails únicos
---     Logotipo NVARCHAR(Max),
+--     Logotipo VARBINARY(Max)
 -- );
+
 
 -- -- Defina a restrição de chave estrangeira para o campo ClienteId
 -- ALTER TABLE TB_Logradouros

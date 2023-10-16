@@ -24,12 +24,19 @@ namespace Teste_TGS.Repositories
 
             }
         }
+        public Logradouro GetLogradouroById(int id, int clienteId)
+        {
+            using (var connection = _context.CreateConnection())
+            {
+                return connection.Query<Logradouro>("SELECT * FROM TB_Logradouros WHERE Id = @Id AND ClienteId = @ClienteId", new { Id = id, ClienteId = clienteId }).FirstOrDefault();
+            }
+        }
 
         public void CreateLogradouro(Logradouro logradouro)
         {
             using (var connection = _context.CreateConnection())
             {
-                string sql = "INSERT INTO TB_Logradouros (Rua, Bairro, Cidade, Estado) VALUES (@Rua, @Bairro, @Cidade, @Logradouro)";
+                string sql = "INSERT INTO TB_Logradouros (Rua, Bairro, Cidade, Estado, Pais, Cep, ClienteId) VALUES (@Rua, @Bairro, @Cidade, @Estado, @Pais, @Cep, @ClienteId)";
                 connection.Execute(sql, logradouro);
             }
         }
@@ -38,7 +45,7 @@ namespace Teste_TGS.Repositories
         {
             using (var connection = _context.CreateConnection())
             {
-                string sql = "UPDATE TB_Logradouros SET Rua = @Rua, Bairro = @Bairro, Cidade = @Cidade, Estado = @Estado WHERE Id = @Id";
+                string sql = "UPDATE TB_Logradouros SET Rua = @Rua, Bairro = @Bairro, Cidade = @Cidade, Estado = @Estado, Pais = @Pais, Cep = @Cep WHERE Id = @Id AND ClienteId = @ClienteId";
                 connection.Execute(sql, logradouro);
             }
         }

@@ -24,8 +24,50 @@
             @Html.DisplayFor(model => model.Email)
         </dd>
         <dt class="col-sm-3">
-
+            @Html.DisplayNameFor(model => model.Logotipo.imagemString)
+        </dt>
+        <dd class="col-sm-10">
+            <img style="height: 100px; width: 100px;"
+                src="@Html.DisplayFor(modelItem => Model.Logotipo.imagemString)" />
+        </dd>
     </dl>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th> @Html.DisplayNameFor(model => model.Logradouro[0].Rua)</th>
+                <th> @Html.DisplayNameFor(model => model.Logradouro[0].Bairro)</th>
+                <th> @Html.DisplayNameFor(model => model.Logradouro[0].Cidade)</th>
+                <th> @Html.DisplayNameFor(model => model.Logradouro[0].Estado)</th>
+                <th> @Html.DisplayNameFor(model => model.Logradouro[0].Pais)</th>
+                <th> @Html.DisplayNameFor(model => model.Logradouro[0].Cep)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Logradouro.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => model.Logradouro[i].Rua)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Logradouro[i].Bairro)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Logradouro[i].Cidade)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Logradouro[i].Estado)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Logradouro[i].Pais)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Logradouro[i].Cep)
+                    </td>
+                </tr>
+            }
+        </tbody>
 </div>
 <div>
     @* @if (User.IsInRole("Master") || User.IsInRole("Avançado"))

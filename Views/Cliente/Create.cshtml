@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Create";
-    var Enderecos = 0;
+    var contador = 1;
 }
 
 <h1>Cadastrar</h1>
@@ -32,38 +32,6 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="Enderecos" class="control-label"></label>
-                <input asp-for="Enderecos" class="form-control" required id="qtdEnderecos" />
-                <span asp-validation-for="Enderecos" class="text-danger"></span>
-            </div>
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Rua</th>
-                        <th>Bairro</th>
-                        <th>Cidade</th>
-                        <th>Estado</th>
-                        <th>Pais</th>
-                        <th>CEP</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (int i = 0; i < Enderecos; i++)
-                    {
-                        <tr>
-                            <td><input asp-for="Logradouro[i].Rua" /></td>
-                            <td><input asp-for="Logradouro[i].Bairro" /></td>
-                            <td><input asp-for="Logradouro[i].Cidade" /></td>
-                            <td><input asp-for="Logradouro[i].Estado" /></td>
-                            <td><input asp-for="Logradouro[i].Pais" /></td>
-                            <td><input asp-for="Logradouro[i].Cep" /></td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-
-            <div class="form-group">
                 <input type="submit" value="Cadastrar" class="btn btn-primary" />
             </div>
         </form>
@@ -81,11 +49,6 @@
     }
 
 <script>
-    $("#qtdEnderecos").change(function () {
-        Enderecos = document.getElementById("#qtdEnderecos").text;
-        alert("Field Value: " + Enderecos);
-    });
-
 
     $("#ImagemUpload").change(function () {
         $("#img_nome").text(this.files[0].name);
@@ -94,5 +57,6 @@
 
     $("#ImagemUpload").attr("data-val", "true");
     $("#ImagemUpload").attr("data-val-required", "Preencha o campo Imagem");
+
 </script>
 }

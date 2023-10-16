@@ -9,5 +9,7 @@ namespace Teste_TGS.Interfaces
         void CreateCliente(Cliente _Cliente);
         void UpdateCliente(Cliente _Cliente);
         void DeleteCliente(int id);
+        IEnumerable<Logradouro> GetAllLogradouros(int id);
+
     }
 }

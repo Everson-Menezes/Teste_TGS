@@ -32,7 +32,9 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td class="col-sm-4">
-                    @Html.DisplayFor(modelItem => item.Logotipo)
+
+                    <img style="height: 100px; width: 100px;"
+                        src="@Html.DisplayFor(modelItem => item.Logotipo.imagemString)" />
                 </td>
                 <td class="col-sm"> *
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a>

@@ -10,7 +10,7 @@ namespace Teste_TGS.ViewModels
         public string Cidade { get; set; }
         public string Estado { get; set; }
         public string Pais { get; set; }
-        public long Cep { get; set; }
+        public string Cep { get; set; }
         public int ClienteId { get; set; }
     }
 }
