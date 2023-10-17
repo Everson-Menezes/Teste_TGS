@@ -28,6 +28,8 @@ public class ClienteController : Controller, IDisposable
 
     public async Task<IActionResult> IndexAsync()
     {
+        ICollection<ClienteViewModel> clienteViewModel = new List<ClienteViewModel>();
+
         using (var client = _clientFactory.CreateClient("localhost"))
         {
 
@@ -38,23 +40,26 @@ public class ClienteController : Controller, IDisposable
 
 
             List<Cliente> clientes = JsonConvert.DeserializeObject<List<Cliente>>(content);
-
-            ICollection<ClienteViewModel> clienteViewModel = new List<ClienteViewModel>();
-
-            foreach (var cliente in clientes)
+            if(clientes != null)
             {
-                ClienteViewModel obj = new ClienteViewModel();
-                obj.Id = cliente.Id;
-                obj.Nome = cliente.Nome;
-                obj.Email = cliente.Email;
-                obj.Logotipo = new LogoTipoViewModel();
-                obj.Logotipo.imagemString = ConverterArquivoByteArrayEmBase64(cliente.LogoTipo);
-                clienteViewModel.Add(obj);
-            }
-            Dispose();
 
-            return View(clienteViewModel);
+                foreach (var cliente in clientes)
+                {
+                    ClienteViewModel obj = new ClienteViewModel();
+                    obj.Id = cliente.Id;
+                    obj.Nome = cliente.Nome;
+                    obj.Email = cliente.Email;
+                    obj.Logotipo = new LogoTipoViewModel();
+                    obj.Logotipo.imagemString = ConverterArquivoByteArrayEmBase64(cliente.LogoTipo);
+                    clienteViewModel.Add(obj);
+                }
+                Dispose();
+
+                return View(clienteViewModel);
+            }
+            
         }
+        return View(clienteViewModel);
     }
 
 
